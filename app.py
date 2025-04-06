@@ -9,6 +9,47 @@ st.set_page_config(page_title="📚 Metaverse Book Club", layout="centered")
 st.markdown("<h1 style='text-align: center;'>📚 Metaverse Book Club</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center;'>Enter immersive genres, AI questions & a creative journal space.</p>", unsafe_allow_html=True)
 
+
+# Sample AI-generated prompts
+ai_prompts = [
+    "🧠 What motivates the main character right now?",
+    "🌌 How does this fictional world connect with ours?",
+    "💭 What symbolism do you notice in the setting?",
+    "🔮 If you could ask a character one question, what would it be?",
+    "📚 How would you rewrite the ending of this chapter?"
+]
+
+# Sample AI-art backdrops (you can add your own URLs)
+background_images = {
+    "Fantasy": "https://images.unsplash.com/photo-1581091012184-7f1c7f3a87a7",
+    "Sci-Fi": "https://images.unsplash.com/photo-1581322333069-4e4e479d9de2",
+    "Mystery": "https://images.unsplash.com/photo-1519985176271-adb1088fa94c",
+}
+
+# Sidebar
+st.sidebar.title("🎨 Backdrop Selector")
+genre = st.sidebar.selectbox("Select Book Genre", list(background_images.keys()))
+bg_url = background_images[genre]
+
+# Display background image
+st.image(bg_url, caption=f"{genre} World", use_column_width=True)
+
+# App Title
+st.title("📚 Metaverse Book Club")
+st.caption("An immersive, AI-powered listening and journaling experience")
+
+# Audio Player
+st.subheader("🎧 Virtual Listening Room")
+st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
+
+# Real-time AI Question
+st.subheader("🤖 AI-Generated Real-time Question")
+if st.button("🔄 Generate Question"):
+    st.session_state.question = random.choice(ai_prompts)
+if st.session_state.question:
+    st.info(st.session_state.question)
+
+
 # --------------------------- GENRES --------------------------
 genres = {
     "Mystery": {
