@@ -45,7 +45,7 @@ background_images = {
 st.image(bg_url, caption=f"{genre} World", use_column_width=True)
 
 
-}
+
 
 # Sidebar
 st.sidebar.title("🎨 Backdrop Selector")
