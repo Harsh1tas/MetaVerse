@@ -68,8 +68,8 @@ except Exception as e:
     st.warning("⚠️ Couldn't load image. Try another genre.")
     st.error(str(e))
 
-# --------------------------- AI QUESTION --------------------------
-st.markdown("### 🤖 AI Prompted Discussion")
+# --------------------------- AI QUESTION GENERATOR --------------------------
+st.markdown("## 🤖 AI Discussion Prompt")
 question = random.choice(genres[genre]["questions"])
 st.success(f"💬 {question}")
 
