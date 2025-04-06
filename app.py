@@ -30,6 +30,21 @@ background_images = {
     "Fantasy": "https://images.unsplash.com/photo-1581091012184-7f1c7f3a87a7",
     "Sci-Fi": "https://images.unsplash.com/photo-1581322333069-4e4e479d9de2",
     "Mystery": "https://images.unsplash.com/photo-1519985176271-adb1088fa94c",
+    "Romance": "https://images.unsplash.com/photo-1519167811503-ec65ed9c7cdd",
+    "Historical": "https://images.unsplash.com/photo-1583225272828-1cc0fbc5365c",
+    "Horror": "https://images.unsplash.com/photo-1521295121783-8a321d551ad2",
+    "Adventure": "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
+    "Dystopian": "https://images.unsplash.com/photo-1532676021073-4182b4ee8e2c",
+    "Biography": "https://images.unsplash.com/photo-1609016701223-98a373fe6b37",
+    "Self-help": "https://images.unsplash.com/photo-1580894894510-7e8b1f5d8d79",
+}
+
+
+
+# Display background image
+st.image(bg_url, caption=f"{genre} World", use_column_width=True)
+
+
 }
 
 # Sidebar
