@@ -40,12 +40,12 @@ background_images = {
 
 }
 
-# Sidebar
+# Sidebar – Book Genre
 st.sidebar.title("🎨 Backdrop Selector")
 genre = st.sidebar.selectbox("Select Book Genre", list(background_images.keys()))
 bg_url = background_images[genre]
 
-# Display background image
+# Display backdrop image
 st.image(bg_url, caption=f"{genre} World", use_column_width=True)
 
 # App Title
