@@ -18,7 +18,8 @@ genres = {
             "Was the ending satisfying or too abrupt?",
             "Which character do you suspect the most and why?"
         ],
-        "image": "https://images.pexels.com/photos/792381/pexels-photo-792381.jpeg"
+        "image": "https://images.pexels.com/photos/792381/pexels-photo-792381.jpeg",
+        "audio": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
     },
     "Sci-Fi": {
         "questions": [
@@ -26,7 +27,8 @@ genres = {
             "How do the technologies reflect human fears?",
             "Would you live in this timeline?"
         ],
-        "image": "https://images.pexels.com/photos/256369/pexels-photo-256369.jpeg"
+        "image": "https://images.pexels.com/photos/256369/pexels-photo-256369.jpeg",
+        "audio": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
     },
     "Fantasy": {
         "questions": [
@@ -34,7 +36,8 @@ genres = {
             "Would you ally with the protagonist or villain?",
             "How was world-building handled?"
         ],
-        "image": "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg"
+        "image": "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg",
+        "audio": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"
     },
     "Romance": {
         "questions": [
@@ -42,7 +45,8 @@ genres = {
             "Did the story rely on clichés?",
             "How did the romance evolve over time?"
         ],
-        "image": "https://images.pexels.com/photos/1020895/pexels-photo-1020895.jpeg"
+        "image": "https://images.pexels.com/photos/1020895/pexels-photo-1020895.jpeg",
+        "audio": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3"
     },
     "Dystopian": {
         "questions": [
@@ -50,7 +54,8 @@ genres = {
             "Could this society arise today?",
             "Who was the most rebellious character?"
         ],
-        "image": "https://images.pexels.com/photos/919734/pexels-photo-919734.jpeg"
+        "image": "https://images.pexels.com/photos/919734/pexels-photo-919734.jpeg",
+        "audio": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
     }
 }
 
@@ -67,6 +72,11 @@ try:
 except Exception as e:
     st.warning("⚠️ Couldn't load image. Try another genre.")
     st.error(str(e))
+
+# --------------------------- AUDIOBOOK SECTION --------------------------
+st.markdown("### 🎧 Audiobook Sample")
+audio_url = genres[genre]["audio"]
+st.audio(audio_url)
 
 # --------------------------- AI QUESTION GENERATOR --------------------------
 st.markdown("## 🤖 AI Discussion Prompt")
@@ -88,6 +98,22 @@ if genre in ["Fantasy", "Sci-Fi", "Mystery"]:
     st.markdown("### 🎨 Doodle Pad (Genre-Based Unlock)")
     st.markdown("Unleash your imagination with a simple sketchpad (external).")
     st.markdown("[Launch Doodle Pad](https://jspaint.app) 🌐", unsafe_allow_html=True)
+
+# --------------------------- VIRTUAL GROUP DISCUSSION --------------------------
+st.markdown("### 👥 Virtual Group Discussion")
+
+if "group_chat" not in st.session_state:
+    st.session_state["group_chat"] = []
+
+user_name = st.text_input("Your Name", value="Reader")
+new_msg = st.text_input("Type your message and press Enter")
+
+if new_msg:
+    st.session_state["group_chat"].append(f"**{user_name}**: {new_msg}")
+    st.experimental_rerun()
+
+for msg in reversed(st.session_state["group_chat"][-10:]):
+    st.markdown(msg)
 
 # --------------------------- END --------------------------
 st.markdown("---")
