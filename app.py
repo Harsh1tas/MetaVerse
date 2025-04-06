@@ -1,84 +1,93 @@
 import streamlit as st
-from streamlit_drawable_canvas import st_canvas
 import random
+from PIL import Image
+import requests
+from io import BytesIO
 
-st.set_page_config(
-    page_title="📚 Metaverse Book Club",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+st.set_page_config(page_title="📚 Metaverse Book Club", layout="centered")
 
-# Initialize session states
-if "note" not in st.session_state:
-    st.session_state.note = ""
-if "question" not in st.session_state:
-    st.session_state.question = ""
-if "canvas_data" not in st.session_state:
-    st.session_state.canvas_data = None
+st.markdown("<h1 style='text-align: center;'>📚 Metaverse Book Club</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>Enter immersive genres, AI questions & a creative journal space.</p>", unsafe_allow_html=True)
 
-# Sample AI-generated prompts
-ai_prompts = [
-    "🧠 What motivates the main character right now?",
-    "🌌 How does this fictional world connect with ours?",
-    "💭 What symbolism do you notice in the setting?",
-    "🔮 If you could ask a character one question, what would it be?",
-    "📚 How would you rewrite the ending of this chapter?"
-]
-
-# Sample AI-art backdrops (you can add your own URLs)
-background_images = {
-    "Fantasy": "https://images.unsplash.com/photo-1581091012184-7f1c7f3a87a7",
-    "Sci-Fi": "https://images.unsplash.com/photo-1581322333069-4e4e479d9de2",
-    "Mystery": "https://images.unsplash.com/photo-1519985176271-adb1088fa94c",
-    "Romance": "https://images.unsplash.com/photo-1519167811503-ec65ed9c7cdd",
-    "Historical": "https://images.unsplash.com/photo-1583225272828-1cc0fbc5365c",
-    "Horror": "https://images.unsplash.com/photo-1521295121783-8a321d551ad2",
-    "Adventure": "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
-    "Dystopian": "https://images.unsplash.com/photo-1532676021073-4182b4ee8e2c",
-    "Biography": "https://images.unsplash.com/photo-1609016701223-98a373fe6b37",
-    "Self-help": "https://images.unsplash.com/photo-1580894894510-7e8b1f5d8d79",
-
+# --------------------------- GENRES --------------------------
+genres = {
+    "Mystery": {
+        "questions": [
+            "What clues were subtly placed throughout the story?",
+            "Was the ending satisfying or too abrupt?",
+            "Which character do you suspect the most and why?"
+        ],
+        "image": "https://images.pexels.com/photos/792381/pexels-photo-792381.jpeg"
+    },
+    "Sci-Fi": {
+        "questions": [
+            "Is this future believable or too distant?",
+            "How do the technologies reflect human fears?",
+            "Would you live in this timeline?"
+        ],
+        "image": "https://images.pexels.com/photos/256369/pexels-photo-256369.jpeg"
+    },
+    "Fantasy": {
+        "questions": [
+            "Which magical element felt most creative?",
+            "Would you ally with the protagonist or villain?",
+            "How was world-building handled?"
+        ],
+        "image": "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg"
+    },
+    "Romance": {
+        "questions": [
+            "Were the emotions realistic or exaggerated?",
+            "Did the story rely on clichés?",
+            "How did the romance evolve over time?"
+        ],
+        "image": "https://images.pexels.com/photos/1020895/pexels-photo-1020895.jpeg"
+    },
+    "Dystopian": {
+        "questions": [
+            "What aspect of the dystopia felt closest to reality?",
+            "Could this society arise today?",
+            "Who was the most rebellious character?"
+        ],
+        "image": "https://images.pexels.com/photos/919734/pexels-photo-919734.jpeg"
+    }
 }
 
-# Sidebar – Book Genre
-st.sidebar.title("🎨 Backdrop Selector")
-genre = st.sidebar.selectbox("Select Book Genre", list(background_images.keys()))
-bg_url = background_images[genre]
+# --------------------------- SELECT GENRE --------------------------
+genre = st.selectbox("🎧 Select Book Genre", list(genres.keys()))
 
-# Display backdrop image
-st.image(bg_url, caption=f"{genre} World", use_column_width=True)
+# --------------------------- BACKGROUND IMAGE --------------------------
+st.markdown(f"### 🌌 {genre} Book Vibe")
 
-# App Title
-st.title("📚 Metaverse Book Club")
-st.caption("An immersive, AI-powered listening and journaling experience")
+try:
+    img_url = genres[genre]["image"]
+    response = requests.get(img_url)
+    img = Image.open(BytesIO(response.content))
+    st.image(img, caption=f"{genre} mood", width=700)
+except Exception as e:
+    st.warning("⚠️ Couldn't load image. Try another genre.")
+    st.error(str(e))
 
-# Audio Player
-st.subheader("🎧 Virtual Listening Room")
-st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
+# --------------------------- AI QUESTION --------------------------
+st.markdown("### 🤖 AI Prompted Discussion")
+question = random.choice(genres[genre]["questions"])
+st.success(f"💬 {question}")
 
-# Real-time AI Question
-st.subheader("🤖 AI-Generated Real-time Question")
-if st.button("🔄 Generate Question"):
-    st.session_state.question = random.choice(ai_prompts)
-if st.session_state.question:
-    st.info(st.session_state.question)
+# --------------------------- JOURNAL PAD --------------------------
+st.markdown("### 📝 Private Journal Pad")
 
-# Notes Section
-st.subheader("📝 Private Journal")
-note = st.text_area("Your thoughts while listening...", value=st.session_state.note, height=150)
-if st.button("💾 Save Note"):
-    st.session_state.note = note
-    st.success("Saved in session!")
+default_notes = st.session_state.get("notes", "")
+notes = st.text_area("Write your reflections or insights...", value=default_notes, height=200)
 
-# Sketchpad
-st.subheader("🎨 AI-Augmented Doodle Pad")
-canvas_result = st_canvas(
-    fill_color="rgba(255, 255, 255, 0.3)",
-    stroke_width=3,
-    stroke_color="#000000",
-    background_color="#f0f0f0",
-    update_streamlit=True,
-    height=300,
-    drawing_mode="freedraw",
-    key="canvas"
-)
+if st.button("💾 Save Thoughts"):
+    st.session_state["notes"] = notes
+    st.success("Saved locally in session.")
+
+# --------------------------- CONDITIONAL DOODLE --------------------------
+if genre in ["Fantasy", "Sci-Fi", "Mystery"]:
+    st.markdown("### 🎨 Doodle Pad (Genre-Based Unlock)")
+    st.markdown("Unleash your imagination with a simple sketchpad (external).")
+    st.markdown("[Launch Doodle Pad](https://jspaint.app) 🌐", unsafe_allow_html=True)
+
+st.markdown("---")
+st.caption("✨ Designed for immersive & futuristic reading experiences.")
