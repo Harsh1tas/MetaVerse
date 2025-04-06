@@ -4,6 +4,7 @@ from PIL import Image
 import requests
 from io import BytesIO
 
+# --------------------------- CONFIG --------------------------
 st.set_page_config(page_title="📚 Metaverse Book Club", layout="centered")
 
 st.markdown("<h1 style='text-align: center;'>📚 Metaverse Book Club</h1>", unsafe_allow_html=True)
@@ -58,12 +59,11 @@ genre = st.selectbox("🎧 Select Book Genre", list(genres.keys()))
 
 # --------------------------- BACKGROUND IMAGE --------------------------
 st.markdown(f"### 🌌 {genre} Book Vibe")
-
 try:
     img_url = genres[genre]["image"]
     response = requests.get(img_url)
     img = Image.open(BytesIO(response.content))
-    st.image(img, caption=f"{genre} mood", width=700)
+    st.image(img, caption=f"{genre} mood", use_column_width=True)
 except Exception as e:
     st.warning("⚠️ Couldn't load image. Try another genre.")
     st.error(str(e))
@@ -89,5 +89,6 @@ if genre in ["Fantasy", "Sci-Fi", "Mystery"]:
     st.markdown("Unleash your imagination with a simple sketchpad (external).")
     st.markdown("[Launch Doodle Pad](https://jspaint.app) 🌐", unsafe_allow_html=True)
 
+# --------------------------- END --------------------------
 st.markdown("---")
 st.caption("✨ Designed for immersive & futuristic reading experiences.")
