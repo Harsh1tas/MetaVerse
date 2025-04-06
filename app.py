@@ -37,15 +37,8 @@ background_images = {
     "Dystopian": "https://images.unsplash.com/photo-1532676021073-4182b4ee8e2c",
     "Biography": "https://images.unsplash.com/photo-1609016701223-98a373fe6b37",
     "Self-help": "https://images.unsplash.com/photo-1580894894510-7e8b1f5d8d79",
+
 }
-
-
-
-# Display background image
-st.image(bg_url, caption=f"{genre} World", use_column_width=True)
-
-
-
 
 # Sidebar
 st.sidebar.title("🎨 Backdrop Selector")
